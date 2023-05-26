@@ -9,7 +9,7 @@ Users can create, read, update and delete their own blog posts. Admins manage an
 
 ### Links and Resources
 
-- [GitHub Actions ci/cd](https://github.com/Coriana1/auth-api/actions)
+- [GitHub Actions ci/cd](https://github.com/Coriana1/blog-central/actions)
 - [back-end dev server url](https://auth-api-zqkj.onrender.com)
 
 ### Setup
