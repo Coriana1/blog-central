@@ -1,10 +1,11 @@
 'use strict';
 
 const express = require('express');
-const blogPostModels = require('PLACEHOLDER');
+const blogPostModels = require('../models');
 
 const router = express.Router();
 
+//middleware to set route params
 router.param('model', (req, res, next) => {
   const modelName = req.params.model;
   if (blogPostModels[modelName]) {
@@ -15,11 +16,12 @@ router.param('model', (req, res, next) => {
   }
 });
 
-router.get('/blog-posts', handleGetAll);
-router.get('/blog-posts/:id', handleGetOne);
-router.post('/blog-posts', handleCreate);
-router.put('/blog-posts/:id', handleUpdate);
-router.delete('/blog-posts/:id', handleDelete);
+//Route to blog post (all, sinlge post by id, create new, update, delete all by id)
+router.get('/:blog-posts', handleGetAll);
+router.get('/:blog-posts/:id', handleGetOne);
+router.post('/:blog-posts', handleCreate);
+router.put('/:blog-posts/:id', handleUpdate);
+router.delete('/:blog-posts/:id', handleDelete);
 
 async function handleGetAll(req, res) {
   let allBlogPosts = await req.model.get();

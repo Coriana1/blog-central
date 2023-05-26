@@ -1,54 +1,61 @@
 'use strict';
 
 const express = require('express');
-const dataModules = require('../models');
+const blogPostModels = require('../models');
+
+const router = express.Router();
+
 
 const basicAuth = require('../auth/middleware/basic');
 const bearerAuth = require('../auth/middleware/bearer');
 const acl = require('../auth/middleware/acl');
 
-const router = express.Router();
 
 router.param('model', (req, res, next) => {
   const modelName = req.params.model;
-  if (dataModules[modelName]) {
-    req.model = dataModules[modelName];
+  if (blogPostModels[modelName]) {
+    req.model = blogPostModels[modelName];
     next();
   } else {
     next('Invalid Model');
   }
 });
 
-router.get('/users/:userId', basicAuth, handleGetOne);
-router.put('/users/:userId', bearerAuth, acl('update'), handleUpdate);
-router.delete('/users/:userId', bearerAuth, acl('delete'), handleDelete);
+router.get('/:blog-posts', basicAuth, handleGetAll);
+router.get('/:blog-posts/:id', basicAuth, handleGetOne);
+router.post('/:blog-posts', bearerAuth, acl('create'), handleCreate);
+router.patch('/:blog-posts', bearerAuth, acl('update'), handleUpdate);
+router.put('/:blog-posts/:id', bearerAuth, acl('update'), handleUpdate);
+router.delete('/:blog-posts/:id', bearerAuth, acl('delete'), handleDelete);
+
+async function handleGetAll(req, res) {
+  let allBlogPosts = await req.model.get();
+  res.status(200).json(allBlogPosts);
+}
 
 async function handleGetOne(req, res) {
-  const userId = req.params.userId;
-  let userRecord = await req.model.getUserById(userId);
-  if (userRecord) {
-    res.status(200).json(userRecord);
-  } else {
-    res.status(404).json({ error: 'User not found' });
-  }
+  const id = req.params.id;
+  let blogPost = await req.model.get(id);
+  res.status(200).json(blogPost);
+}
+
+async function handleCreate(req, res) {
+  let blogPostData = req.body;
+  let newBlogPost = await req.model.create(blogPostData);
+  res.status(201).json(newBlogPost);
 }
 
 async function handleUpdate(req, res) {
-  const userId = req.params.userId;
-  const updatedUserData = req.body;
-  let updatedUser = await req.model.updateUserById(userId, updatedUserData);
-  if (updatedUser) {
-    res.status(200).json(updatedUser);
-  } else {
-    res.status(404).json({ error: 'User not found' });
-  }
+  const id = req.params.id;
+  const updatedData = req.body;
+  let updatedBlogPost = await req.model.update(id, updatedData);
+  res.status(200).json(updatedBlogPost);
 }
 
 async function handleDelete(req, res) {
-  const userId = req.params.userId;
-  let deletedUser = await req.model.deleteUser(userId);
-  if (deletedUser) {
-    res.status(200).json({ message: 'User deleted successfully' });
+  let id = req.params.id;
+  let deletedBlogPost = await req.model.delete(id);
+  res.status(200).json(deletedBlogPost);
 }
 
 module.exports = router;

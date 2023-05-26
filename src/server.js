@@ -8,7 +8,7 @@ const cors = require('cors');
 const notFound = require('./error-handlers/400');
 const errorHandler = require('./error-handlers/500');
 const logger = require('./middleware/logger.js');
-const authRoutes = require('./routes');
+const authRoutes = require('./auth/routes');
 const v1route = require('./routes/v1');
 const v2route = require('./routes/v2');
 
