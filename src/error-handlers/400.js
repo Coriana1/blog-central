@@ -11,6 +11,4 @@ const handleBadRequest = (req, res, next) => {
   res.status(404).json(errorObject);
 };
 
-module.exports = {
-  handleBadRequest,
-};
+module.exports = handleBadRequest;
