@@ -1,10 +1,10 @@
 'use strict'; 
 
 require('dotenv').config();
-const { bd } = require('PLACEHOLD');
-const server = require('PLACEHOLDER');
+const { db } = require('./src/models');
+const server = require('./src/server');
 const PORT = process.env.PORT || 3001;
 
-debug.sync().then() => {
+db.sync().then(() => {
   server.start(PORT);
 });
