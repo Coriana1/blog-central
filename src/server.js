@@ -5,10 +5,10 @@ const express = require('express');
 const cors = require('cors');
 
 // Project Specific Modules
-const notFound = require('./error-handlers/400');
-const errorHandler = require('./error-handlers/500');
+const handleBadRequest = require('./error-handlers/400.js');
+const errorHandler = require('./error-handlers/500.js');
 const logger = require('./middleware/logger.js');
-const authRoutes = require('./routes');
+const authRoutes = require('./auth/routes.js');
 const v1route = require('./routes/v1');
 const v2route = require('./routes/v2');
 
@@ -28,7 +28,7 @@ app.use('/api/v1', v1route);
 app.use('/api/v2', v2route);
 
 // Catch alls
-app.use('*', notFound);
+app.use('*', handleBadRequest);
 app.use(errorHandler);
 
 module.exports = {
