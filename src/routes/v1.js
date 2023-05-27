@@ -17,8 +17,8 @@ router.param('model', (req, res, next) => {
 });
 
 //Route to blog post (all, sinlge post by id, create new, update, delete all by id)
-router.get('/:blog-posts', handleGetAll);
-router.get('/:blog-posts/:id', handleGetOne);
+router.get('/blog-posts', handleGetAll);
+router.get('/blog-posts/:id', handleGetOne);
 router.post('/:blog-posts', handleCreate);
 router.put('/:blog-posts/:id', handleUpdate);
 router.delete('/:blog-posts/:id', handleDelete);
