@@ -1,6 +1,6 @@
 'use strict';
 
-const blogPostModel = (sequelize, DataTypes) => sequelize.define('BlogPost', {
+const vlogPostModel = (sequelize, DataTypes) => sequelize.define('BlogPost', {
   id: { 
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -30,4 +30,4 @@ const blogPostModel = (sequelize, DataTypes) => sequelize.define('BlogPost', {
   },
 });
 
-module.exports = blogPostModel;
+module.exports = vlogPostModel;
