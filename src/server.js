@@ -5,13 +5,12 @@ const express = require('express');
 const cors = require('cors');
 
 // Project Specific Modules
-const handleBadRequest = require('./error-handlers/400.js');
+const handleBadRequest = require('./error-handlers/404.js');
 const errorHandler = require('./error-handlers/500.js');
 const logger = require('./middleware/logger.js');
 const authRoutes = require('./auth/routes.js');
 const v1route = require('./routes/v1');
 const v2route = require('./routes/v2');
-
 
 // Prepare the express app
 const app = express();
