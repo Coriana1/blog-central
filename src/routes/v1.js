@@ -1,27 +1,30 @@
 'use strict';
 
 const express = require('express');
-const blogPostModels = require('../models');
+const dataModules = require('../models');
 
 const router = express.Router();
 
 //middleware to set route params
 router.param('model', (req, res, next) => {
   const modelName = req.params.model;
-  if (blogPostModels[modelName]) {
-    req.model = blogPostModels[modelName];
-    next();
+  if (dataModules[modelName]) {
+    req.model = dataModules[modelName];
+    // req.model = userModel;
+    {
+      next();
+    }
   } else {
     next('Invalid Model');
   }
 });
 
 //Route to blog post (all, sinlge post by id, create new, update, delete all by id)
-router.get('/blog-posts', handleGetAll);
-router.get('/blog-posts/:id', handleGetOne);
-router.post('/:blog-posts', handleCreate);
-router.put('/:blog-posts/:id', handleUpdate);
-router.delete('/:blog-posts/:id', handleDelete);
+router.get('/:model', handleGetAll);
+router.get('/:model/:id', handleGetOne);
+router.post('/:model', handleCreate);
+router.put('/:model/:id', handleUpdate);
+router.delete('/:model/:id', handleDelete);
 
 async function handleGetAll(req, res) {
   let allBlogPosts = await req.model.get();

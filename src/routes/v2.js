@@ -1,32 +1,29 @@
 'use strict';
 
 const express = require('express');
-const blogPostModels = require('../models');
+const dataModules = require('../models');
+
+// const basicAuth = require('../auth/middleware/basic');
+const bearerAuth = require('../auth/middleware/bearer');
+const permissions = require('../auth/middleware/acl');
 
 const router = express.Router();
 
-
-const basicAuth = require('../auth/middleware/basic');
-const bearerAuth = require('../auth/middleware/bearer');
-const acl = require('../auth/middleware/acl');
-
-
 router.param('model', (req, res, next) => {
   const modelName = req.params.model;
-  if (blogPostModels[modelName]) {
-    req.model = blogPostModels[modelName];
+  if (dataModules[modelName]) {
+    req.model = dataModules[modelName];
     next();
   } else {
     next('Invalid Model');
   }
 });
 
-router.get('/:blog-posts', basicAuth, handleGetAll);
-router.get('/:blog-posts/:id', basicAuth, handleGetOne);
-router.post('/:blog-posts', bearerAuth, acl('create'), handleCreate);
-router.patch('/:blog-posts', bearerAuth, acl('update'), handleUpdate);
-router.put('/:blog-posts/:id', bearerAuth, acl('update'), handleUpdate);
-router.delete('/:blog-posts/:id', bearerAuth, acl('delete'), handleDelete);
+router.get('/:model', bearerAuth, handleGetAll);
+router.get('/:model/:id', bearerAuth, handleGetOne);
+router.post('/:model', bearerAuth, permissions('create'), handleCreate);
+router.put('/:model/:id', bearerAuth, permissions('update'), handleUpdate);
+router.delete('/:model/:id', bearerAuth, permissions('delete'), handleDelete);
 
 async function handleGetAll(req, res) {
   let allBlogPosts = await req.model.get();

@@ -6,9 +6,10 @@ const authRouter = express.Router();
 const { users } = require('../models/index');
 const basicAuth = require('./middleware/basic');
 const bearerAuth = require('./middleware/bearer');
-const access = require('./middleware/acl');
+const permissions = require('./middleware/acl');
 
 authRouter.post('/signup', async (req, res, next) => {
+  console.log('I AM HERE');
   try {
     let userRecord = await users.create(req.body);
     const output = {
@@ -29,7 +30,7 @@ authRouter.post('/signin', basicAuth, (req, res, next) => {
   res.status(200).json(user);
 });
 
-authRouter.get('/users', bearerAuth, access('delete'), async (req, res, next) => {
+authRouter.get('/users', bearerAuth, permissions('delete'), async (req, res, next) => {
   const userRecords = await users.findAll({});
   const list = userRecords.map(user => user.username);
   res.status(200).json(list);
