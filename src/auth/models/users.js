@@ -27,8 +27,8 @@ const userModel = (sequelize, DataTypes) => {
       get() {
         const acl = {
           // user: ['read'],
-          // writer: ['read', 'create'],
-          // editor: ['read', 'create', 'update'],
+          // writer: ['read', 'create', 'update'],
+          // editor: ['read', 'update', 'delete'],
           user: ['read', 'create', 'update', 'delete'],
           writer: ['read', 'create', 'update', 'delete'],
           editor: ['read', 'create', 'update', 'delete'],
