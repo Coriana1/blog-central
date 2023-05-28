@@ -52,7 +52,8 @@ async function handleUpdate(req, res) {
 async function handleDelete(req, res) {
   let id = req.params.id;
   let deletedBlogPost = await req.model.delete(id);
-  res.status(200).json(deletedBlogPost);
+  console.log(deletedBlogPost, `Resource with id ${id} was deleted`);
+  res.status(200).json({message: `${id} was deleted`});
 }
 
 module.exports = router;

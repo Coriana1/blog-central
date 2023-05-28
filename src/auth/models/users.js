@@ -13,7 +13,9 @@ const userModel = (sequelize, DataTypes) => {
     token: {
       type: DataTypes.VIRTUAL,
       get() {
-        return jwt.sign({ username: this.username }, SECRET);
+        return jwt.sign({ username: this.username }, SECRET, {
+          expiresIn: '2.5h',
+        });
       },
       set(tokenObj) {
         let token = jwt.sign(tokenObj, SECRET);
@@ -24,9 +26,12 @@ const userModel = (sequelize, DataTypes) => {
       type: DataTypes.VIRTUAL,
       get() {
         const acl = {
-          user: ['read'],
-          writer: ['read', 'create'],
-          editor: ['read', 'create', 'update'],
+          // user: ['read'],
+          // writer: ['read', 'create', 'update'],
+          // editor: ['read', 'update', 'delete'],
+          user: ['read', 'create', 'update', 'delete'],
+          writer: ['read', 'create', 'update', 'delete'],
+          editor: ['read', 'create', 'update', 'delete'],
           admin: ['read', 'create', 'update', 'delete'],
         };
         return acl[this.role];
